@@ -64,5 +64,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# POS
-# POS
+
+# POS Project Credit
+
+A Point of Sale (POS) system developed by following a CodeLab(https://www.facebook.com/codelab.mm) course to strengthen my full-stack development skills, including authentication, product management, sales processing, and reporting.
+
