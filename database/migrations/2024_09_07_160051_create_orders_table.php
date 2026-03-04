@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('count');
             $table->string('status');
             $table->string('order_code');
-            // $table->integer('total_price');
+            $table->decimal('total_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }

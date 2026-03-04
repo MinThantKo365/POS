@@ -1,174 +1,202 @@
 @extends('admin.layouts.master')
 @section('content')
-<div class="container-fluid">
+@php
+    use App\Models\Product;
+    use App\Models\order;
+    use App\Models\category;
+    use App\Models\cart;
+    
+    $totalProducts = Product::count();
+    $totalOrders = order::count();
+    $totalCategories = category::count();
+    $pendingOrders = order::where('status', 'pending')->count();
+    $totalRevenue = order::where('status', 'completed')->sum('total_price') ?? 0;
+    $totalUsers = \App\Models\User::where('role', 'user')->count();
+@endphp
 
+<div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
     </div>
+    <p class="mb-4">Welcome back, {{ Auth::user()->name }}!</p>
 
-    <!-- Content Row -->
-    <div class="row">
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Earnings (Monthly)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Earnings (Annual)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <!-- Total Products Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-start border-primary border-4 shadow h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase text-primary fw-bold small mb-1">Total Products</div>
+                                <div class="h3 mb-0 fw-bold text-dark">{{ $totalProducts }}</div>
                             </div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                </div>
-                                <div class="col">
-                                    <div class="progress progress-sm mr-2">
-                                        <div class="progress-bar bg-info" role="progressbar"
-                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                            aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                            <div class="ms-auto">
+                                <i class="fas fa-box fa-3x text-primary opacity-25"></i>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        <div class="mt-3">
+                            <a href="{{ route('admin.products.index') }}" class="text-decoration-none text-primary small">
+                                View Products <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Orders Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-start border-success border-4 shadow h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase text-success fw-bold small mb-1">Total Orders</div>
+                                <div class="h3 mb-0 fw-bold text-dark">{{ $totalOrders }}</div>
+                            </div>
+                            <div class="ms-auto">
+                                <i class="fas fa-shopping-cart fa-3x text-success opacity-25"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{{ route('admin.orders.index') }}" class="text-decoration-none text-success small">
+                                View Orders <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Orders Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-start border-warning border-4 shadow h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase text-warning fw-bold small mb-1">Pending Orders</div>
+                                <div class="h3 mb-0 fw-bold text-dark">{{ $pendingOrders }}</div>
+                            </div>
+                            <div class="ms-auto">
+                                <i class="fas fa-clock fa-3x text-warning opacity-25"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <a href="{{ route('admin.orders.index') }}?status=pending" class="text-decoration-none text-warning small">
+                                View Pending <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Revenue Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card border-start border-info border-4 shadow h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="text-uppercase text-info fw-bold small mb-1">Total Revenue</div>
+                                <div class="h3 mb-0 fw-bold text-dark">${{ number_format($totalRevenue, 2) }}</div>
+                            </div>
+                            <div class="ms-auto">
+                                <i class="fas fa-dollar-sign fa-3x text-info opacity-25"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <span class="text-muted small">Completed orders</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Pending Requests</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+        <!-- Additional Stats Row -->
+        <div class="row g-4 mb-4">
+            <!-- Categories Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-tags fa-3x text-secondary mb-3"></i>
+                        <h3 class="fw-bold">{{ $totalCategories }}</h3>
+                        <p class="text-muted mb-0">Categories</p>
+                        <a href="{{ route('category#List') }}" class="btn btn-sm btn-outline-primary mt-2">
+                            Manage <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Users Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x text-secondary mb-3"></i>
+                        <h3 class="fw-bold">{{ $totalUsers }}</h3>
+                        <p class="text-muted mb-0">Total Users</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Orders Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h3 class="fw-bold">{{ order::where('status', 'completed')->count() }}</h3>
+                        <p class="text-muted mb-0">Completed Orders</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Products Card -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card shadow h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h3 class="fw-bold">{{ Product::where('stock', '<', 10)->count() }}</h3>
+                        <p class="text-muted mb-0">Low Stock Products</p>
+                        <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-outline-danger mt-2">
+                            Check <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row g-4">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.products.create') }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-plus me-2"></i>Add Product
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('category#List') }}" class="btn btn-outline-success w-100">
+                                    <i class="fas fa-tag me-2"></i>Manage Categories
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-info w-100">
+                                    <i class="fas fa-shopping-cart me-2"></i>View Orders
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ route('profile#page') }}" class="btn btn-outline-secondary w-100">
+                                    <i class="fas fa-user me-2"></i>My Profile
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Content Row -->
-
-    <div class="row">
-
-        <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Direct
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Social
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-info"></i> Referral
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 @endsection

@@ -42,7 +42,17 @@ class CategoryController extends Controller
     }
 
     public function update($id, Request $request){
+        $this->checkValidation($request);
 
+        $category = category::findOrFail($id);
+        $category->update([
+            'name'       => $request->categoryName,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Alert::success('Category Update', 'Category updated successfully!!!');
+
+        return redirect()->route('category#List');
     }
     public function checkValidation(Request $request){
         $request -> validate([

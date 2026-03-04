@@ -10,7 +10,23 @@ class cart extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'post_id',
+        'product_id',
         'qty',
     ];
+
+    /**
+     * Get the user that owns the cart.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the product in the cart.
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }

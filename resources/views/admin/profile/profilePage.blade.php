@@ -1,7 +1,11 @@
 @extends('admin.layouts.master')
 @section('content')
-
-<div class="container">
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-user me-2"></i>Profile</h1>
+    </div>
+    <div class="container">
                 <div class="jumbotron">
                   <div class="row">
                       <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
@@ -22,4 +26,6 @@
                       </div>
                   </div>
                 </div>
+    </div>
+</div>
 @endsection

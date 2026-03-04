@@ -1,11 +1,10 @@
 @extends('admin.layouts.master')
 @section('content')
-    <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Change Password</h1>
-        </div>
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-lock me-2"></i>Change Password</h1>
+    </div>
 
         {{-- List --}}
         <div class="">
@@ -50,9 +49,5 @@
             </div>
         </div>
     </div>
-    {{-- @if (session('alert'))
-        <script>
-            alert("{{ session('alert') }}");
-        </script>
-    @endif --}}
+</div>
 @endsection

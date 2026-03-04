@@ -31,11 +31,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('AdminHome') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                    <i class="fas fa-store"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">Code Lab Studio</div>
+                <div class="sidebar-brand-text mx-3">POS System</div>
             </a>
 
             <!-- Divider -->
@@ -43,51 +43,74 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-fw fa-table"></i><span>Dashboard </span></a>
+                <a class="nav-link {{ request()->routeIs('AdminHome') ? 'active' : '' }}" href="{{ route('AdminHome') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Management
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('category#*') ? 'active' : '' }}" href="{{ route('category#List') }}">
+                    <i class="fas fa-fw fa-tags"></i>
+                    <span>Categories</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('category#List') }}"><i class="fa-solid fa-circle-plus"></i></i><span>Category </span></a>
+                <a class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}" href="{{ route('admin.products.index') }}">
+                    <i class="fas fa-fw fa-box"></i>
+                    <span>Products</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-sitemap"></i></i><span>Add Category </span></a>
+                <a class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}" href="{{ route('admin.orders.index') }}">
+                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Account
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('profile#*') ? 'active' : '' }}" href="{{ route('profile#page') }}">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>Profile</span>
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-layer-group"></i><span>Product Details </span></a>
+                <a class="nav-link {{ request()->routeIs('change#*') ? 'active' : '' }}" href="{{ route('change#pwd') }}">
+                    <i class="fas fa-fw fa-lock"></i>
+                    <span>Change Password</span>
+                </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-plus"></i></i><span>Add Item </span></a>
-            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
 
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-credit-card"></i></i><span>Payment Method </span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-list"></i><span>Sale Information </span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-cart-shopping"></i><span>Order Board </span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-gear"></i></i><span>Setting </span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa-solid fa-lock"></i></i></i><span>Change Password </span></a>
-            </li>
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="post">
+                <form action="{{ route('logout') }}" method="POST" class="px-3">
                     @csrf
-                    <span class="nav-link">
-                    <button type="submit" class="btn btn-dark"><i class="fa-solid fa-right-from-bracket">Logout</i></button>
-                    </span>
-              </form>
+                    <button type="submit" class="nav-link btn btn-link text-start w-100 p-0" style="border: none; background: none; color: rgba(255, 255, 255, 0.8);">
+                        <i class="fas fa-fw fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </li>
         </ul>
         <!-- End of Sidebar -->

@@ -14,5 +14,22 @@ class order extends Model
         'count',
         'status',
         'order_code',
+        'total_price',
     ];
+
+    /**
+     * Get the user that owns the order.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the product in the order.
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 }
